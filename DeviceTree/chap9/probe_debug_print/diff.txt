@@ -1,0 +1,102 @@
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 97864aabc..4a89a86ed 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -559,7 +559,7 @@ config ARCH_MULTI_V5
+ 	select ARCH_MULTI_V4_V5
+ 	select CPU_ARM926T if !(CPU_ARM946E || CPU_ARM1020 || \
+ 		CPU_ARM1020E || CPU_ARM1022 || CPU_ARM1026 || \
+-		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON)
++		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON || CPU_V6)
+ 
+ config ARCH_MULTI_V4_V5
+ 	bool
+diff --git a/arch/arm/mach-versatile/Kconfig b/arch/arm/mach-versatile/Kconfig
+index f5c275434..87ff5f537 100644
+--- a/arch/arm/mach-versatile/Kconfig
++++ b/arch/arm/mach-versatile/Kconfig
+@@ -7,7 +7,7 @@ config ARCH_VERSATILE
+ 	select ARM_VIC
+ 	select CLKSRC_VERSATILE
+ 	select COMMON_CLK_VERSATILE
+-	select CPU_ARM926T
++	select CPU_V6
+ 	select ICST
+ 	select MFD_SYSCON
+ 	select PLAT_VERSATILE
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index fe1523664..6c99fa421 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -292,6 +292,11 @@ static int amba_probe(struct device *dev)
+ 		dev_pm_domain_detach(dev, true);
+ 	} while (0);
+ 
++	printk("%s: dev %s drv %s ret %x probe %pS\n", __func__,
++				   pcdev->dev.driver->name, pcdrv->drv.name, ret,
++				   pcdrv->probe
++				   );
++
+ 	return ret;
+ }
+ 
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index b25bcab2a..2a580e703 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -590,8 +590,12 @@ static int really_probe(struct device *dev, struct device_driver *drv)
+ 
+ 	driver_bound(dev);
+ 	ret = 1;
+-	pr_debug("bus: '%s': %s: bound device %s to driver %s\n",
++	printk("bus: '%s': %s: bound device %s to driver %s\n",
+ 		 drv->bus->name, __func__, dev_name(dev), drv->name);
++	printk("%s: of_node %pOF bus_probe %pS probe %pS\n",
++			__func__,
++		 dev->of_node, dev->bus->probe, drv->probe);
++
+ 	goto done;
+ 
+ dev_groups_failed:
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index b5ce7b085..2c81ec193 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -722,6 +722,11 @@ static int platform_drv_probe(struct device *_dev)
+ 		ret = -ENXIO;
+ 	}
+ 
++	printk("%s: dev %s drv %s ret %x probe %pS\n", __func__, 
++			dev->name, drv->driver.name, ret,
++			drv->probe
++			);
++
+ 	return ret;
+ }
+ 
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index ce1b61cf1..2c57bbe26 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -994,7 +994,7 @@ config MMC_TOSHIBA_PCI
+ 
+ config MMC_BCM2835
+ 	tristate "Broadcom BCM2835 SDHOST MMC Controller support"
+-	depends on ARCH_BCM2835 || COMPILE_TEST
++	depends on ARCH_BCM2835 || COMPILE_TEST || ARCH_VERSATILE
+ 	help
+ 	  This selects the BCM2835 SDHOST MMC controller. If you have
+ 	  a BCM2835 platform with SD or MMC devices, say Y or M here.
+diff --git a/drivers/rtc/rtc-ds1307.c b/drivers/rtc/rtc-ds1307.c
+index 1f7e8aefc..2fb098d23 100644
+--- a/drivers/rtc/rtc-ds1307.c
++++ b/drivers/rtc/rtc-ds1307.c
+@@ -1585,6 +1585,8 @@ static int ds1307_probe(struct i2c_client *client,
+ 	struct ds1307_platform_data *pdata = dev_get_platdata(&client->dev);
+ 	u8			trickle_charger_setup = 0;
+ 
++	dump_stack();
++
+ 	ds1307 = devm_kzalloc(&client->dev, sizeof(struct ds1307), GFP_KERNEL);
+ 	if (!ds1307)
+ 		return -ENOMEM;

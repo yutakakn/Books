@@ -1,0 +1,81 @@
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 97864aabc..4a89a86ed 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -559,7 +559,7 @@ config ARCH_MULTI_V5
+ 	select ARCH_MULTI_V4_V5
+ 	select CPU_ARM926T if !(CPU_ARM946E || CPU_ARM1020 || \
+ 		CPU_ARM1020E || CPU_ARM1022 || CPU_ARM1026 || \
+-		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON)
++		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON || CPU_V6)
+ 
+ config ARCH_MULTI_V4_V5
+ 	bool
+diff --git a/arch/arm/boot/dts/versatile-ab.dts b/arch/arm/boot/dts/versatile-ab.dts
+index 37bd41ff8..a1cb5f97a 100644
+--- a/arch/arm/boot/dts/versatile-ab.dts
++++ b/arch/arm/boot/dts/versatile-ab.dts
+@@ -13,6 +13,7 @@ aliases {
+ 		serial1 = &uart1;
+ 		serial2 = &uart2;
+ 		i2c0 = &i2c0;
++		lcd0 = &lcd0;
+ 	};
+ 
+ 	chosen {
+@@ -184,7 +185,7 @@ net@10010000 {
+ 		interrupts = <25>;
+ 	};
+ 
+-	lcd@10008000 {
++	lcd0: lcd@10008000 {
+ 		compatible = "arm,versatile-lcd";
+ 		reg = <0x10008000 0x1000>;
+ 	};
+diff --git a/arch/arm/mach-versatile/Kconfig b/arch/arm/mach-versatile/Kconfig
+index f5c275434..87ff5f537 100644
+--- a/arch/arm/mach-versatile/Kconfig
++++ b/arch/arm/mach-versatile/Kconfig
+@@ -7,7 +7,7 @@ config ARCH_VERSATILE
+ 	select ARM_VIC
+ 	select CLKSRC_VERSATILE
+ 	select COMMON_CLK_VERSATILE
+-	select CPU_ARM926T
++	select CPU_V6
+ 	select ICST
+ 	select MFD_SYSCON
+ 	select PLAT_VERSATILE
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index ce1b61cf1..2c57bbe26 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -994,7 +994,7 @@ config MMC_TOSHIBA_PCI
+ 
+ config MMC_BCM2835
+ 	tristate "Broadcom BCM2835 SDHOST MMC Controller support"
+-	depends on ARCH_BCM2835 || COMPILE_TEST
++	depends on ARCH_BCM2835 || COMPILE_TEST || ARCH_VERSATILE
+ 	help
+ 	  This selects the BCM2835 SDHOST MMC controller. If you have
+ 	  a BCM2835 platform with SD or MMC devices, say Y or M here.
+diff --git a/drivers/of/base.c b/drivers/of/base.c
+index ae03b1218..7f45b87aa 100644
+--- a/drivers/of/base.c
++++ b/drivers/of/base.c
+@@ -1376,6 +1376,8 @@ static int __of_parse_phandle_with_args(const struct device_node *np,
+ 	struct of_phandle_iterator it;
+ 	int rc, cur_index = 0;
+ 
++	printk("%s: list[%s] cells[%s]\n", __func__, list_name, cells_name);
++
+ 	/* Loop over the phandles until all the requested entry is found */
+ 	of_for_each_phandle(&it, rc, np, list_name, cells_name, cell_count) {
+ 		/*
+@@ -1386,6 +1388,7 @@ static int __of_parse_phandle_with_args(const struct device_node *np,
+ 		 */
+ 		rc = -ENOENT;
+ 		if (cur_index == index) {
++			printk("%s: it.phandle %d\n", __func__, it.phandle);
+ 			if (!it.phandle)
+ 				goto err;
+ 

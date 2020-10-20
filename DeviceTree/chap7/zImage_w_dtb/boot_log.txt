@@ -1,0 +1,61 @@
+yutaka@yutaka-VirtualBox(~/raspi/go_5.6.4) ./go_zImage_w_dtb.sh 
+WARNING: Image format was not specified for '../2020-02-13-raspbian-buster-lite.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+pulseaudio: set_sink_input_volume() failed
+pulseaudio: Reason: Invalid argument
+pulseaudio: set_sink_input_mute() failed
+pulseaudio: Reason: Invalid argument
+vpb_sic_write: Bad register offset 0x2c
+Booting Linux on physical CPU 0x0
+Linux version 5.6.4+ (yutaka@yutaka-VirtualBox) (gcc version 4.8.3 20140303 (prerelease) (crosstool-NG linaro-1.13.1+bzr2650 - Linaro GCC 2014.03)) #18 Wed Aug 19 20:24:28 JST 2020
+CPU: ARMv6-compatible processor [410fb767] revision 7 (ARMv7), cr=00c5387d
+CPU: VIPT aliasing data cache, unknown instruction cache
+OF: fdt: Machine model: yutaka
+Memory policy: Data cache writeback
+Built 1 zonelists, mobility grouping on.  Total pages: 8120
+Kernel command line: root=1f03 mem=32M
+Dentry cache hash table entries: 4096 (order: 2, 16384 bytes, linear)
+Inode-cache hash table entries: 2048 (order: 1, 8192 bytes, linear)
+mem auto-init: stack:off, heap alloc:off, heap free:off
+Memory: 24664K/32768K available (5100K kernel code, 187K rwdata, 1892K rodata, 184K init, 139K bss, 8104K reserved, 0K cma-reserved)
+NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
+VIC @(ptrval): id 0x00041190, vendor 0x41
+FPGA IRQ chip 0 "intc" @ (ptrval), 20 irqs, parent IRQ: 47
+random: get_random_bytes called from start_kernel+0x344/0x53c with crng_init=0
+clocksource: arm,sp804: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275 ns
+sched_clock: 32 bits at 1000kHz, resolution 1000ns, wraps every 2147483647500ns
+Failed to initialize '/amba/timer@101e3000': -22
+sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 89478484971ns
+Console: colour dummy device 80x30
+printk: console [tty0] enabled
+Calibrating delay loop... 783.97 BogoMIPS (lpj=3919872)
+pid_max: default: 32768 minimum: 301
+Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+Disabling memory control group subsystem
+CPU: Testing write buffer coherency: ok
+Setting up static identity map for 0x8220 - 0x827c
+devtmpfs: initialized
+VFP support v0.3: implementor 41 architecture 1 part 20 variant b rev 5
+clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+futex hash table entries: 256 (order: -1, 3072 bytes, linear)
+NET: Registered protocol family 16
+DMA: preallocated 256 KiB pool for atomic coherent allocations
+Serial: AMBA PL011 UART driver
+101f1000.uart: ttyAMA0 at MMIO 0x101f1000 (irq = 28, base_baud = 0) is a PL011 rev1
+printk: console [ttyAMA0] enabled
+101f2000.uart: ttyAMA1 at MMIO 0x101f2000 (irq = 29, base_baud = 0) is a PL011 rev1
+101f3000.uart: ttyAMA2 at MMIO 0x101f3000 (irq = 30, base_baud = 0) is a PL011 rev1
+OF: amba_device_add() failed (-19) for /amba/smc@10100000
+OF: amba_device_add() failed (-19) for /amba/mpmc@10110000
+OF: amba_device_add() failed (-19) for /amba/sctl@101e0000
+OF: amba_device_add() failed (-19) for /amba/watchdog@101e1000
+OF: amba_device_add() failed (-19) for /amba/sci@101f0000
+OF: amba_device_add() failed (-19) for /amba/spi@101f4000
+10009000.uart: ttyAMA3 at MMIO 0x10009000 (irq = 54, base_baud = 0) is a PL011 rev1
+OF: amba_device_add() failed (-19) for /amba/fpga/sci@a000
+vgaarb: loaded
+SCSI subsystem initialized
+clocksource: Switched to clocksource arm,sp804
+NET: Registered protocol family 2

@@ -1,0 +1,346 @@
+
+yutaka@yutaka-VirtualBox(~/raspi/go_5.5.8) cd ..
+yutaka@yutaka-VirtualBox(~/raspi) ls
+2020-02-13-raspbian-buster-lite.img  go_5.5.8/  linux5.6/      linux5.6.org/
+2020-02-13-raspbian-buster-lite.zip  go_5.6.4/  linux5.6.diff
+yutaka@yutaka-VirtualBox(~/raspi) cd go_5.6.4/
+yutaka@yutaka-VirtualBox(~/raspi/go_5.6.4) ls
+_config  go.sh*  linux5.6.diff  versatile-pb.dtb  zImage*
+yutaka@yutaka-VirtualBox(~/raspi/go_5.6.4) ./go.sh 
+WARNING: Image format was not specified for '../2020-02-13-raspbian-buster-lite.img' and probing guessed raw.
+         Automatically detecting the format is dangerous for raw images, write operations on block 0 will be restricted.
+         Specify the 'raw' format explicitly to remove the restrictions.
+pulseaudio: set_sink_input_volume() failed
+pulseaudio: Reason: Invalid argument
+pulseaudio: set_sink_input_mute() failed
+pulseaudio: Reason: Invalid argument
+vpb_sic_write: Bad register offset 0x2c
+Booting Linux on physical CPU 0x0
+Linux version 5.6.4+ (yutaka@yutaka-VirtualBox) (gcc version 4.8.3 20140303 (prerelease) (crosstool-NG linaro-1.13.1+bzr2650 - Linaro GCC 2014.03)) #1 Sun Apr 26 19:05:14 JST 2020
+CPU: ARMv6-compatible processor [410fb767] revision 7 (ARMv7), cr=00c5387d
+CPU: VIPT aliasing data cache, unknown instruction cache
+OF: fdt: Machine model: ARM Versatile PB
+Memory policy: Data cache writeback
+Built 1 zonelists, mobility grouping on.  Total pages: 64960
+Kernel command line: root=/dev/sda2 panic=1 rootfstype=ext4 rw
+Dentry cache hash table entries: 32768 (order: 5, 131072 bytes, linear)
+Inode-cache hash table entries: 16384 (order: 4, 65536 bytes, linear)
+mem auto-init: stack:off, heap alloc:off, heap free:off
+Memory: 252356K/262144K available (5101K kernel code, 187K rwdata, 1364K rodata, 184K init, 139K bss, 9788K reserved, 0K cma-reserved)
+NR_IRQS: 16, nr_irqs: 16, preallocated irqs: 16
+VIC @(ptrval): id 0x00041190, vendor 0x41
+FPGA IRQ chip 0 "intc" @ (ptrval), 20 irqs, parent IRQ: 47
+random: get_random_bytes called from start_kernel+0x344/0x53c with crng_init=0
+clocksource: arm,sp804: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 1911260446275 ns
+sched_clock: 32 bits at 1000kHz, resolution 1000ns, wraps every 2147483647500ns
+Failed to initialize '/amba/timer@101e3000': -22
+sched_clock: 32 bits at 24MHz, resolution 41ns, wraps every 89478484971ns
+Console: colour dummy device 80x30
+printk: console [tty0] enabled
+Calibrating delay loop... 869.99 BogoMIPS (lpj=4349952)
+pid_max: default: 32768 minimum: 301
+Mount-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+Mountpoint-cache hash table entries: 1024 (order: 0, 4096 bytes, linear)
+Disabling memory control group subsystem
+CPU: Testing write buffer coherency: ok
+Setting up static identity map for 0x8220 - 0x827c
+devtmpfs: initialized
+VFP support v0.3: implementor 41 architecture 1 part 20 variant b rev 5
+clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 19112604462750000 ns
+futex hash table entries: 256 (order: -1, 3072 bytes, linear)
+NET: Registered protocol family 16
+DMA: preallocated 256 KiB pool for atomic coherent allocations
+OF: amba_device_add() failed (-19) for /amba/smc@10100000
+OF: amba_device_add() failed (-19) for /amba/mpmc@10110000
+OF: amba_device_add() failed (-19) for /amba/sctl@101e0000
+OF: amba_device_add() failed (-19) for /amba/watchdog@101e1000
+OF: amba_device_add() failed (-19) for /amba/sci@101f0000
+OF: amba_device_add() failed (-19) for /amba/spi@101f4000
+OF: amba_device_add() failed (-19) for /amba/fpga/sci@a000
+Serial: AMBA PL011 UART driver
+101f1000.uart: ttyAMA0 at MMIO 0x101f1000 (irq = 28, base_baud = 0) is a PL011 rev1
+printk: console [ttyAMA0] enabled
+101f2000.uart: ttyAMA1 at MMIO 0x101f2000 (irq = 29, base_baud = 0) is a PL011 rev1
+101f3000.uart: ttyAMA2 at MMIO 0x101f3000 (irq = 30, base_baud = 0) is a PL011 rev1
+10009000.uart: ttyAMA3 at MMIO 0x10009000 (irq = 54, base_baud = 0) is a PL011 rev1
+vgaarb: loaded
+SCSI subsystem initialized
+clocksource: Switched to clocksource arm,sp804
+NET: Registered protocol family 2
+tcp_listen_portaddr_hash hash table entries: 512 (order: 0, 4096 bytes, linear)
+TCP established hash table entries: 2048 (order: 1, 8192 bytes, linear)
+TCP bind hash table entries: 2048 (order: 1, 8192 bytes, linear)
+TCP: Hash tables configured (established 2048 bind 2048)
+UDP hash table entries: 256 (order: 0, 4096 bytes, linear)
+UDP-Lite hash table entries: 256 (order: 0, 4096 bytes, linear)
+NET: Registered protocol family 1
+RPC: Registered named UNIX socket transport module.
+RPC: Registered udp transport module.
+RPC: Registered tcp transport module.
+RPC: Registered tcp NFSv4.1 backchannel transport module.
+PCI: CLS 0 bytes, default 32
+NetWinder Floating Point Emulator V0.97 (double precision)
+workingset: timestamp_bits=14 max_order=16 bucket_order=2
+Installing knfsd (copyright (C) 1996 okir@monad.swb.de).
+jffs2: version 2.2. (NAND) © 2001-2006 Red Hat, Inc.
+romfs: ROMFS MTD (C) 2007 Red Hat, Inc.
+Block layer SCSI generic (bsg) driver version 0.4 loaded (major 252)
+io scheduler mq-deadline registered
+io scheduler kyber registered
+pl061_gpio 101e4000.gpio: PL061 GPIO chip registered
+pl061_gpio 101e5000.gpio: PL061 GPIO chip registered
+pl061_gpio 101e6000.gpio: PL061 GPIO chip registered
+pl061_gpio 101e7000.gpio: PL061 GPIO chip registered
+versatile-pci 10001000.pci: host bridge /amba/pci@10001000 ranges:
+versatile-pci 10001000.pci:       IO 0x0043000000..0x004300ffff -> 0x0000000000
+versatile-pci 10001000.pci:      MEM 0x0050000000..0x005fffffff -> 0x0050000000
+versatile-pci 10001000.pci:      MEM 0x0060000000..0x006fffffff -> 0x0060000000
+versatile-pci 10001000.pci: PCI core found (slot 11)
+versatile-pci 10001000.pci: PCI host bridge to bus 0000:00
+pci_bus 0000:00: root bus resource [bus 00-ff]
+pci_bus 0000:00: root bus resource [io  0x0000-0xffff]
+pci_bus 0000:00: root bus resource [mem 0x50000000-0x5fffffff]
+pci_bus 0000:00: root bus resource [mem 0x60000000-0x6fffffff pref]
+pci 0000:00:0c.0: [1000:0012] type 00 class 0x010000
+pci 0000:00:0c.0: reg 0x10: [io  0x0000-0x00ff]
+pci 0000:00:0c.0: reg 0x14: [mem 0x00000000-0x000003ff]
+pci 0000:00:0c.0: reg 0x18: [mem 0x00000000-0x00001fff]
+PCI: bus0: Fast back to back transfers disabled
+pci 0000:00:0c.0: BAR 2: assigned [mem 0x50000000-0x50001fff]
+pci 0000:00:0c.0: BAR 1: assigned [mem 0x50002000-0x500023ff]
+pci 0000:00:0c.0: BAR 0: assigned [io  0x1000-0x10ff]
+versatile-tft-panel 10000000.sysreg:display@0: no panel detected
+drm-clcd-pl111 10120000.display: set up callbacks for Versatile PL110
+drm-clcd-pl111 10120000.display: found bridge on endpoint 1
+drm-clcd-pl111 10120000.display: Using non-panel bridge
+[drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+[drm] No driver support for vblank timestamp query.
+[drm] Initialized pl111 1.0.0 20170317 for 10120000.display on minor 0
+drm-clcd-pl111 10120000.display: enable Versatile CLCD connectors
+Console: switching to colour frame buffer device 100x37
+drm-clcd-pl111 10120000.display: fb0: pl111drmfb frame buffer device
+brd: module loaded
+sym53c8xx 0000:00:0c.0: enabling device (0100 -> 0103)
+sym0: <895a> rev 0x0 at pci 0000:00:0c.0 irq 66
+sym0: No NVRAM, ID 7, Fast-40, LVD, parity checking
+sym0: SCSI BUS has been reset.
+scsi host0: sym-2.2.3
+random: fast init done
+scsi 0:0:0:0: Direct-Access     QEMU     QEMU HARDDISK    2.5+ PQ: 0 ANSI: 5
+scsi target0:0:0: tagged command queuing enabled, command queue depth 16.
+scsi target0:0:0: Beginning Domain Validation
+scsi target0:0:0: Domain Validation skipping write tests
+scsi target0:0:0: Ending Domain Validation
+scsi 0:0:2:0: CD-ROM            QEMU     QEMU CD-ROM      2.5+ PQ: 0 ANSI: 5
+scsi target0:0:2: tagged command queuing enabled, command queue depth 16.
+scsi target0:0:2: Beginning Domain Validation
+scsi target0:0:2: Domain Validation skipping write tests
+scsi target0:0:2: Ending Domain Validation
+sr 0:0:2:0: Power-on or device reset occurred
+sd 0:0:0:0: Power-on or device reset occurred
+sd 0:0:0:0: [sda] 3612672 512-byte logical blocks: (1.85 GB/1.72 GiB)
+sr 0:0:2:0: [sr0] scsi3-mmc drive: 16x/50x cd/rw xa/form2 cdda tray
+cdrom: Uniform CD-ROM driver Revision: 3.20
+sd 0:0:0:0: [sda] Write Protect is off
+sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+physmap-flash 34000000.flash: versatile/realview flash protection
+physmap-flash 34000000.flash: physmap platform flash device: [mem 0x34000000-0x37ffffff]
+34000000.flash: Found 1 x32 devices at 0x0 in 32-bit bank. Manufacturer ID 0x000000 Chip ID 0x000000
+Intel/Sharp Extended Query Table at 0x0031
+Using buffer write method
+ sda: sda1 sda2
+sd 0:0:0:0: [sda] Attached SCSI disk
+smc91x.c: v1.1, sep 22 2004 by Nicolas Pitre <nico@fluxnic.net>
+smc91x 10010000.net eth0: SMC91C11xFD (rev 1) at (ptrval) IRQ 41
+smc91x 10010000.net eth0: Ethernet addr: 52:54:00:12:34:56
+rtc-ds1307 0-0068: registered as rtc0
+versatile reboot driver registered
+mmci-pl18x fpga:05: /aliases ID not available
+mmci-pl18x fpga:05: mmc0: PL181 manf 41 rev0 at 0x10005000 irq 59,60 (pio)
+mmci-pl18x fpga:0b: /aliases ID not available
+mmci-pl18x fpga:0b: mmc1: PL181 manf 41 rev0 at 0x1000b000 irq 49,50 (pio)
+input: AT Raw Set 2 keyboard as /devices/platform/amba/amba:fpga/10006000.kmi/serio0/input/input0
+leds-syscon 10000000.core-module:led@08.0: registered LED versatile:0
+leds-syscon 10000000.core-module:led@08.1: registered LED versatile:1
+leds-syscon 10000000.core-module:led@08.2: registered LED versatile:2
+leds-syscon 10000000.core-module:led@08.3: registered LED versatile:3
+leds-syscon 10000000.core-module:led@08.4: registered LED versatile:4
+leds-syscon 10000000.core-module:led@08.5: registered LED versatile:5
+leds-syscon 10000000.core-module:led@08.6: registered LED versatile:6
+leds-syscon 10000000.core-module:led@08.7: registered LED versatile:7
+ledtrig-cpu: registered to indicate activity on CPUs
+NET: Registered protocol family 17
+rtc-ds1307 0-0068: setting system clock to 2020-04-26T10:18:19 UTC (1587896299)
+input: ImExPS/2 Generic Explorer Mouse as /devices/platform/amba/amba:fpga/10007000.kmi/serio1/input/input2
+EXT4-fs (sda2): mounted filesystem with ordered data mode. Opts: (null)
+VFS: Mounted root (ext4 filesystem) on device 8:2.
+devtmpfs: mounted
+Freeing unused kernel memory: 184K
+Kernel memory protection not selected by kernel config.
+Run /sbin/init as init process
+systemd[1]: Failed to lookup module alias 'autofs4': Function not implemented
+systemd[1]: systemd 241 running in system mode. (+PAM +AUDIT +SELINUX +IMA +APPARMOR +SMACK +SYSVINIT +UTMP +LIBCRYPTSETUP +GCRYPT +GNUTLS +ACL +XZ +LZ4 +SECCOMP +BLKID +ELFUTILS +KMOD -IDN2 +IDN -PCRE2 default-hierarchy=hybrid)
+systemd[1]: Detected architecture arm.
+
+Welcome to Raspbian GNU/Linux 10 (buster)!
+
+systemd[1]: Set hostname to <raspberrypi>.
+systemd[1]: Failed to bump fs.file-max, ignoring: Invalid argument
+systemd[1]: File /lib/systemd/system/systemd-journald.service:12 configures an IP firewall (IPAddressDeny=any), but the local system does not support BPF/cgroup based firewalling.
+systemd[1]: Proceeding WITHOUT firewalling in effect! (This warning is only shown for the first loaded unit using IP firewalling.)
+random: systemd: uninitialized urandom read (16 bytes read)
+random: systemd: uninitialized urandom read (16 bytes read)
+systemd[1]: Created slice User and Session Slice.
+[  OK  ] Created slice User and Session Slice.
+systemd[1]: Condition check resulted in Journal Audit Socket being skipped.
+random: systemd: uninitialized urandom read (16 bytes read)
+systemd[1]: Listening on Syslog Socket.
+[  OK  ] Listening on Syslog Socket.
+systemd[1]: Listening on udev Kernel Socket.
+[  OK  ] Listening on udev Kernel Socket.
+systemd[1]: Listening on Journal Socket (/dev/log).
+[  OK  ] Listening on Journal Socket (/dev/log).
+systemd[1]: Created slice system-getty.slice.
+[  OK  ] Created slice system-getty.slice.
+systemd[1]: Started Dispatch Password Requests to Console Directory Watch.
+[  OK  ] Started Dispatch Password …ts to Console Directory Watch.
+systemd[1]: Listening on fsck to fsckd communication Socket.
+[  OK  ] Listening on fsck to fsckd communication Socket.
+systemd[1]: Created slice system-systemd\x2dfsck.slice.
+[  OK  ] Created slice system-systemd\x2dfsck.slice.
+systemd[1]: Started Forward Password Requests to Wall Directory Watch.
+[  OK  ] Started Forward Password R…uests to Wall Directory Watch.
+[  OK  ] Reached target Local Encrypted Volumes.
+[  OK  ] Listening on udev Control Socket.
+[  OK  ] Reached target Slices.
+[  OK  ] Reached target Paths.
+[  OK  ] Listening on initctl Compatibility Named Pipe.
+[  OK  ] Reached target Swap.
+[  OK  ] Created slice system-serial\x2dgetty.slice.
+[  OK  ] Listening on Journal Socket.
+         Starting Restore / save the current clock...
+         Starting Set the console keyboard layout...
+         Mounting RPC Pipe File System...
+         Starting Journal Service...
+         Mounting POSIX Message Queue File System...
+         Starting udev Coldplug all Devices...
+         Starting Load Kernel Modules...
+         Mounting Kernel Debug File System...
+[  OK  ] Mounted RPC Pipe File System.
+[  OK  ] Mounted POSIX Message Queue File System.
+[  OK  ] Mounted Kernel Debug File System.
+[  OK  ] Started Restore / save the current clock.
+random: crng init done
+random: 7 urandom warning(s) missed due to ratelimiting
+[  OK  ] Started Load Kernel Modules.
+         Starting Apply Kernel Variables...
+         Starting Remount Root and Kernel File Systems...
+[  OK  ] Started Apply Kernel Variables.
+[  OK  ] Started Journal Service.
+[  OK  ] Started Remount Root and Kernel File Systems.
+         Starting Create System Users...
+         Starting Load/Save Random Seed...
+         Starting Flush Journal to Persistent Storage...
+[  OK  ] Started Load/Save Random Seed.
+[  OK  ] Started Create System Users.
+[  OK  ] Started Flush Journal to Persistent Storage.
+         Starting Create Static Device Nodes in /dev...
+[  OK  ] Started udev Coldplug all Devices.
+         Starting Helper to synchronize boot up for ifupdown...
+[  OK  ] Started Create Static Device Nodes in /dev.
+         Starting udev Kernel Device Manager...
+[  OK  ] Started Set the console keyboard layout.
+[  OK  ] Reached target Local File Systems (Pre).
+[  OK  ] Started Helper to synchronize boot up for ifupdown.
+[  OK  ] Started udev Kernel Device Manager.
+[  OK  ] Found device /dev/ttyAMA0.
+[  OK  ] Found device QEMU_HARDDISK boot.
+         Starting File System Check…isk/by-partuuid/738a4d67-01...
+[  OK  ] Started File System Check Daemon to report status.
+[  OK  ] Started File System Check …/disk/by-partuuid/738a4d67-01.
+         Mounting /boot...
+[  OK  ] Mounted /boot.
+[  OK  ] Reached target Local File Systems.
+         Starting Preprocess NFS configuration...
+         Starting Create Volatile Files and Directories...
+         Starting Set console font and keymap...
+         Starting Raise network interfaces...
+[  OK  ] Started Preprocess NFS configuration.
+[  OK  ] Reached target NFS client services.
+[  OK  ] Reached target Remote File Systems (Pre).
+[  OK  ] Reached target Remote File Systems.
+[  OK  ] Started Set console font and keymap.
+[  OK  ] Started Create Volatile Files and Directories.
+         Starting Network Time Synchronization...
+         Starting Update UTMP about System Boot/Shutdown...
+[  OK  ] Started Update UTMP about System Boot/Shutdown.
+[  OK  ] Started Network Time Synchronization.
+[  OK  ] Reached target System Initialization.
+[  OK  ] Listening on Avahi mDNS/DNS-SD Stack Activation Socket.
+[  OK  ] Listening on D-Bus System Message Bus Socket.
+[  OK  ] Listening on triggerhappy.socket.
+[  OK  ] Reached target Sockets.
+[  OK  ] Reached target Basic System.
+         Starting Login Service...
+         Starting dphys-swapfile - …unt, and delete a swap file...
+         Starting Avahi mDNS/DNS-SD Stack...
+         Starting rng-tools.service...
+[  OK  ] Started D-Bus System Message Bus.
+         Starting triggerhappy global hotkey daemon...
+[  OK  ] Started Regular background program processing daemon.
+         Starting dhcpcd on all interfaces...
+         Starting WPA supplicant...
+         Starting LSB: Switch to on…nless shift key is pressed)...
+[  OK  ] Started Daily Cleanup of Temporary Directories.
+         Starting System Logging Service...
+         Starting Check for Raspberry Pi EEPROM updates...
+[  OK  ] Reached target System Time Synchronized.
+[  OK  ] Started Daily man-db regeneration.
+[  OK  ] Started Daily rotation of log files.
+[  OK  ] Started Daily apt download activities.
+[  OK  ] Started Daily apt upgrade and clean activities.
+[  OK  ] Reached target Timers.
+[  OK  ] Started triggerhappy global hotkey daemon.
+[FAILED] Failed to start rng-tools.service.
+See 'systemctl status rng-tools.service' for details.
+[  OK  ] Started System Logging Service.
+[  OK  ] Started Check for Raspberry Pi EEPROM updates.
+[  OK  ] Started Raise network interfaces.
+[  OK  ] Started Login Service.
+[  OK  ] Started Avahi mDNS/DNS-SD Stack.
+[  OK  ] Started WPA supplicant.
+[  OK  ] Started dphys-swapfile - s…mount, and delete a swap file.
+[  OK  ] Started LSB: Switch to ond…(unless shift key is pressed).
+[  OK  ] Started dhcpcd on all interfaces.
+[  OK  ] Reached target Network.
+         Starting Permit User Sessions...
+         Starting OpenBSD Secure Shell server...
+         Starting /etc/rc.local Compatibility...
+My IP address is 10.0.2.15 
+[  OK  ] Started /etc/rc.local Compatibility.
+[  OK  ] Started Permit User Sessions.
+[  OK  ] Started Getty on tty1.
+[  OK  ] Started Serial Getty on ttyAMA0.
+[  OK  ] Reached target Login Prompts.
+[  OK  ] Started OpenBSD Secure Shell server.
+
+Raspbian GNU/Linux 10 raspberrypi ttyAMA0
+
+raspberrypi login: pi
+Password: 
+Last login: Sun Apr 26 10:27:58 BST 2020 from 10.0.2.2 on pts/0
+Linux raspberrypi 5.6.4+ #1 Sun Apr 26 19:05:14 JST 2020 armv6l
+
+The programs included with the Debian GNU/Linux system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Debian GNU/Linux comes with ABSOLUTELY NO WARRANTY, to the extent
+permitted by applicable law.
+
+SSH is enabled and the default password for the 'pi' user has not been changed.
+This is a security risk - please login as the 'pi' user and type 'passwd' to set a new password.
+
+pi@raspberrypi:~$ uname -a
+Linux raspberrypi 5.6.4+ #1 Sun Apr 26 19:05:14 JST 2020 armv6l GNU/Linux
+pi@raspberrypi:~$ 

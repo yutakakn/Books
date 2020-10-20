@@ -1,0 +1,15 @@
+diff -r linux5.6.org/arch/arm/Kconfig linux5.6/arch/arm/Kconfig
+562c562
+< 		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON)
+---
+> 		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON || CPU_V6)
+diff -r linux5.6.org/arch/arm/mach-versatile/Kconfig linux5.6/arch/arm/mach-versatile/Kconfig
+10c10
+< 	select CPU_ARM926T
+---
+> 	select CPU_V6
+diff -r linux5.6.org/drivers/mmc/host/Kconfig linux5.6/drivers/mmc/host/Kconfig
+997c997
+< 	depends on ARCH_BCM2835 || COMPILE_TEST
+---
+> 	depends on ARCH_BCM2835 || COMPILE_TEST || ARCH_VERSATILE

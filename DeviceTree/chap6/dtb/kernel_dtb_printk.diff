@@ -1,0 +1,146 @@
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 97864aabc..4a89a86ed 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -559,7 +559,7 @@ config ARCH_MULTI_V5
+ 	select ARCH_MULTI_V4_V5
+ 	select CPU_ARM926T if !(CPU_ARM946E || CPU_ARM1020 || \
+ 		CPU_ARM1020E || CPU_ARM1022 || CPU_ARM1026 || \
+-		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON)
++		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON || CPU_V6)
+ 
+ config ARCH_MULTI_V4_V5
+ 	bool
+diff --git a/arch/arm/mach-versatile/Kconfig b/arch/arm/mach-versatile/Kconfig
+index f5c275434..87ff5f537 100644
+--- a/arch/arm/mach-versatile/Kconfig
++++ b/arch/arm/mach-versatile/Kconfig
+@@ -7,7 +7,7 @@ config ARCH_VERSATILE
+ 	select ARM_VIC
+ 	select CLKSRC_VERSATILE
+ 	select COMMON_CLK_VERSATILE
+-	select CPU_ARM926T
++	select CPU_V6
+ 	select ICST
+ 	select MFD_SYSCON
+ 	select PLAT_VERSATILE
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index ce1b61cf1..2c57bbe26 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -994,7 +994,7 @@ config MMC_TOSHIBA_PCI
+ 
+ config MMC_BCM2835
+ 	tristate "Broadcom BCM2835 SDHOST MMC Controller support"
+-	depends on ARCH_BCM2835 || COMPILE_TEST
++	depends on ARCH_BCM2835 || COMPILE_TEST || ARCH_VERSATILE
+ 	help
+ 	  This selects the BCM2835 SDHOST MMC controller. If you have
+ 	  a BCM2835 platform with SD or MMC devices, say Y or M here.
+diff --git a/drivers/of/fdt.c b/drivers/of/fdt.c
+index 2cdf64d24..8eee84361 100644
+--- a/drivers/of/fdt.c
++++ b/drivers/of/fdt.c
+@@ -734,6 +734,7 @@ static int of_fdt_is_compatible(const void *blob,
+ 	if (cp == NULL)
+ 		return 0;
+ 	while (cplen > 0) {
++		printk("cp %s compat %s\n", cp, compat);
+ 		score++;
+ 		if (of_compat_cmp(cp, compat, strlen(compat)) == 0)
+ 			return score;
+@@ -878,7 +879,7 @@ static void __init early_init_dt_check_for_initrd(unsigned long node)
+ 	int len;
+ 	const __be32 *prop;
+ 
+-	pr_debug("Looking for initrd properties... ");
++	printk("Looking for initrd properties... ");
+ 
+ 	prop = of_get_flat_dt_prop(node, "linux,initrd-start", &len);
+ 	if (!prop)
+@@ -894,7 +895,7 @@ static void __init early_init_dt_check_for_initrd(unsigned long node)
+ 	phys_initrd_start = start;
+ 	phys_initrd_size = end - start;
+ 
+-	pr_debug("initrd_start=0x%llx  initrd_end=0x%llx\n",
++	printk("initrd_start=0x%llx  initrd_end=0x%llx\n",
+ 		 (unsigned long long)start, (unsigned long long)end);
+ }
+ #else
+@@ -971,12 +972,12 @@ int __init early_init_dt_scan_root(unsigned long node, const char *uname,
+ 	prop = of_get_flat_dt_prop(node, "#size-cells", NULL);
+ 	if (prop)
+ 		dt_root_size_cells = be32_to_cpup(prop);
+-	pr_debug("dt_root_size_cells = %x\n", dt_root_size_cells);
++	printk("dt_root_size_cells = %x\n", dt_root_size_cells);
+ 
+ 	prop = of_get_flat_dt_prop(node, "#address-cells", NULL);
+ 	if (prop)
+ 		dt_root_addr_cells = be32_to_cpup(prop);
+-	pr_debug("dt_root_addr_cells = %x\n", dt_root_addr_cells);
++	printk("dt_root_addr_cells = %x\n", dt_root_addr_cells);
+ 
+ 	/* break now */
+ 	return 1;
+@@ -1000,21 +1001,30 @@ int __init early_init_dt_scan_memory(unsigned long node, const char *uname,
+ 	const __be32 *reg, *endp;
+ 	int l;
+ 	bool hotpluggable;
++	const unsigned int *reg_i;
++	int i;
+ 
+ 	/* We are scanning "memory" nodes only */
+ 	if (type == NULL || strcmp(type, "memory") != 0)
+ 		return 0;
+ 
+ 	reg = of_get_flat_dt_prop(node, "linux,usable-memory", &l);
+-	if (reg == NULL)
++	printk("linux,usable-memory %px\n", reg);
++	if (reg == NULL) 
+ 		reg = of_get_flat_dt_prop(node, "reg", &l);
+ 	if (reg == NULL)
+ 		return 0;
+ 
+ 	endp = reg + (l / sizeof(__be32));
+ 	hotpluggable = of_get_flat_dt_prop(node, "hotpluggable", NULL);
++	printk("hotpluggable %d\n", hotpluggable);
+ 
+-	pr_debug("memory scan node %s, reg size %d,\n", uname, l);
++	//pr_debug("memory scan node %s, reg size %d,\n", uname, l);
++	printk("memory scan node %s, reg size %d,\n", uname, l);
++	reg_i = reg;
++	// yutaka
++	for (i = 0 ; i < 4; i++) 
++		printk("%08x\n", reg_i[i]);
+ 
+ 	while ((endp - reg) >= (dt_root_addr_cells + dt_root_size_cells)) {
+ 		u64 base, size;
+@@ -1024,7 +1034,7 @@ int __init early_init_dt_scan_memory(unsigned long node, const char *uname,
+ 
+ 		if (size == 0)
+ 			continue;
+-		pr_debug(" - %llx ,  %llx\n", (unsigned long long)base,
++		printk(" - %llx ,  %llx\n", (unsigned long long)base,
+ 		    (unsigned long long)size);
+ 
+ 		early_init_dt_add_memory_arch(base, size);
+@@ -1057,6 +1067,7 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
+ 
+ 	/* Retrieve command line */
+ 	p = of_get_flat_dt_prop(node, "bootargs", &l);
++	printk("bootargs %s\n", p);
+ 	if (p != NULL && l > 0)
+ 		strlcpy(data, p, min(l, COMMAND_LINE_SIZE));
+ 
+@@ -1078,9 +1089,10 @@ int __init early_init_dt_scan_chosen(unsigned long node, const char *uname,
+ #endif
+ #endif /* CONFIG_CMDLINE */
+ 
+-	pr_debug("Command line is: %s\n", (char*)data);
++	printk("Command line is: %s\n", (char*)data);
+ 
+ 	rng_seed = of_get_flat_dt_prop(node, "rng-seed", &l);
++	printk("rng-seed %px\n", rng_seed);
+ 	if (rng_seed && l > 0) {
+ 		add_bootloader_randomness(rng_seed, l);
+ 

@@ -1,0 +1,30 @@
+**** fdtdump is a low-level debugging tool, not meant for general use.
+**** If you want to decompile a dtb, you probably want
+****     dtc -I dtb -O dts <filename>
+
+/dts-v1/;
+// magic:               0xd00dfeed
+// totalsize:           0x14a (330)
+// off_dt_struct:       0x38
+// off_dt_strings:      0x114
+// off_mem_rsvmap:      0x28
+// version:             17
+// last_comp_version:   16
+// boot_cpuid_phys:     0x0
+// size_dt_strings:     0x36
+// size_dt_struct:      0xdc
+
+/ {
+    compatible = "arm,versatile-pb";
+    fragment@0 {
+        target-path = "/lcd@10008000";
+        __overlay__ {
+            #address-cells = <0x00000001>;
+            #size-cells = <0x00000001>;
+            subnode@cafebabe {
+                compatible = "overlay-lcd";
+                reg = <0xcafebabe 0x00000100>;
+            };
+        };
+    };
+};

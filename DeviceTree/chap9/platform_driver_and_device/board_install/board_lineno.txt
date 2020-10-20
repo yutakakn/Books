@@ -1,0 +1,86 @@
+     1  /*
+     2   * サンプルドライバ
+     3   *
+     4   * プラットフォームデバイスを登録する。
+     5   *
+     6   */
+     7  #include <linux/module.h>
+     8  #include <linux/kernel.h>
+     9  #include <linux/device.h>
+    10  #include <linux/siphash.h>
+    11  #include <linux/io.h>
+    12  #include <linux/interrupt.h>
+    13  #include <linux/of.h>
+    14  #include <linux/of_device.h>
+    15  #include "sample.h"
+    16
+    17  #define DRV_NAME "board_driver"
+    18
+    19  MODULE_LICENSE("GPL");
+    20  MODULE_DESCRIPTION("This is a sample driver.");
+    21  MODULE_AUTHOR("Yutaka Hirata");
+    22
+    23  struct board_driver {
+    24      struct device_driver driver;
+    25  };
+    26
+    27  static void board_release(struct device *dev)
+    28  {
+    29      printk("%s\n", __func__);
+    30  }
+    31
+    32  static struct sample_platdata sa_platdata = {
+    33      .flags = 0xcafebabe,
+    34      .dummy = 0,
+    35  };
+    36
+    37  #define BOARD_BAR 0xdeadbeaf
+    38  #define BOARD_IRQ 80
+    39
+    40  static struct resource sample_resources[] = {
+    41      [0] = {
+    42          .start = BOARD_BAR + 0,
+    43          .end = BOARD_BAR + 0x100,
+    44          .flags = IORESOURCE_MEM,
+    45      },
+    46
+    47      [1] = {
+    48          .start = BOARD_IRQ,
+    49          .end = BOARD_IRQ,
+    50          .flags = IORESOURCE_IRQ,
+    51      },
+    52  };
+    53
+    54  static struct platform_device sa_dev = {
+    55      .name = MODULE_NAME,
+    56      .id = 0,
+    57      .dev = {
+    58          .platform_data = &sa_platdata,
+    59      },
+    60      .num_resources  = ARRAY_SIZE(sample_resources),
+    61      .resource = sample_resources,
+    62      .dev.release = board_release,
+    63  };
+    64
+    65  static int board_init(struct board_driver *drv)
+    66  {
+    67      printk("%s\n", __func__);
+    68
+    69      platform_device_register(&sa_dev);
+    70      return 0;
+    71  }
+    72
+    73  static void board_exit(struct board_driver *drv)
+    74  {
+    75      printk("%s\n", __func__);
+    76      platform_device_unregister(&sa_dev);
+    77  }
+    78
+    79  static struct board_driver sa_drv = {
+    80      .driver = {
+    81          .name = DRV_NAME,
+    82      },
+    83  };
+    84
+    85  module_driver(sa_drv, board_init, board_exit);
+    86

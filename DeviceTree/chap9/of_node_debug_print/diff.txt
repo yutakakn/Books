@@ -1,0 +1,148 @@
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 97864aabc..4a89a86ed 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -559,7 +559,7 @@ config ARCH_MULTI_V5
+ 	select ARCH_MULTI_V4_V5
+ 	select CPU_ARM926T if !(CPU_ARM946E || CPU_ARM1020 || \
+ 		CPU_ARM1020E || CPU_ARM1022 || CPU_ARM1026 || \
+-		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON)
++		CPU_XSCALE || CPU_XSC3 || CPU_MOHAWK || CPU_FEROCEON || CPU_V6)
+ 
+ config ARCH_MULTI_V4_V5
+ 	bool
+diff --git a/arch/arm/mach-versatile/Kconfig b/arch/arm/mach-versatile/Kconfig
+index f5c275434..87ff5f537 100644
+--- a/arch/arm/mach-versatile/Kconfig
++++ b/arch/arm/mach-versatile/Kconfig
+@@ -7,7 +7,7 @@ config ARCH_VERSATILE
+ 	select ARM_VIC
+ 	select CLKSRC_VERSATILE
+ 	select COMMON_CLK_VERSATILE
+-	select CPU_ARM926T
++	select CPU_V6
+ 	select ICST
+ 	select MFD_SYSCON
+ 	select PLAT_VERSATILE
+diff --git a/drivers/base/platform.c b/drivers/base/platform.c
+index b5ce7b085..4d9380da8 100644
+--- a/drivers/base/platform.c
++++ b/drivers/base/platform.c
+@@ -702,6 +702,8 @@ static int platform_drv_probe(struct device *_dev)
+ 	struct platform_device *dev = to_platform_device(_dev);
+ 	int ret;
+ 
++	printk("%s: %s\n", __func__, dev->name);
++
+ 	ret = of_clk_set_defaults(_dev->of_node, false);
+ 	if (ret < 0)
+ 		return ret;
+@@ -722,6 +724,8 @@ static int platform_drv_probe(struct device *_dev)
+ 		ret = -ENXIO;
+ 	}
+ 
++	printk("%s: %s %d\n", __func__, dev->name, ret);
++
+ 	return ret;
+ }
+ 
+diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
+index ce1b61cf1..2c57bbe26 100644
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -994,7 +994,7 @@ config MMC_TOSHIBA_PCI
+ 
+ config MMC_BCM2835
+ 	tristate "Broadcom BCM2835 SDHOST MMC Controller support"
+-	depends on ARCH_BCM2835 || COMPILE_TEST
++	depends on ARCH_BCM2835 || COMPILE_TEST || ARCH_VERSATILE
+ 	help
+ 	  This selects the BCM2835 SDHOST MMC controller. If you have
+ 	  a BCM2835 platform with SD or MMC devices, say Y or M here.
+diff --git a/drivers/of/platform.c b/drivers/of/platform.c
+index 3371e4a06..7fbad4bfd 100644
+--- a/drivers/of/platform.c
++++ b/drivers/of/platform.c
+@@ -172,8 +172,10 @@ static struct platform_device *of_platform_device_create_pdata(
+ 	struct platform_device *dev;
+ 
+ 	if (!of_device_is_available(np) ||
+-	    of_node_test_and_set_flag(np, OF_POPULATED))
++	    of_node_test_and_set_flag(np, OF_POPULATED)) {
++		printk("%s: %s error1\n", __func__, np->name);
+ 		return NULL;
++	}
+ 
+ 	dev = of_device_alloc(np, bus_id, parent);
+ 	if (!dev)
+@@ -190,6 +192,7 @@ static struct platform_device *of_platform_device_create_pdata(
+ 		platform_device_put(dev);
+ 		goto err_clear_flag;
+ 	}
++	printk("%s: %s\n", __func__, np->name);
+ 
+ 	return dev;
+ 
+@@ -225,7 +228,7 @@ static struct amba_device *of_amba_device_create(struct device_node *node,
+ 	const void *prop;
+ 	int i, ret;
+ 
+-	pr_debug("Creating amba device %pOF\n", node);
++	printk("Creating amba device %pOF\n", node);
+ 
+ 	if (!of_device_is_available(node) ||
+ 	    of_node_test_and_set_flag(node, OF_POPULATED))
+@@ -271,6 +274,7 @@ static struct amba_device *of_amba_device_create(struct device_node *node,
+ 		       ret, node);
+ 		goto err_free;
+ 	}
++	printk("%s: %s\n", __func__, node->name);
+ 
+ 	return dev;
+ 
+@@ -355,21 +359,23 @@ static int of_platform_bus_create(struct device_node *bus,
+ 	void *platform_data = NULL;
+ 	int rc = 0;
+ 
++	printk("%s: node %s\n", __func__, bus->name);
++
+ 	/* Make sure it has a compatible property */
+ 	if (strict && (!of_get_property(bus, "compatible", NULL))) {
+-		pr_debug("%s() - skipping %pOF, no compatible prop\n",
++		printk("%s() - skipping %pOF, no compatible prop\n",
+ 			 __func__, bus);
+ 		return 0;
+ 	}
+ 
+ 	/* Skip nodes for which we don't want to create devices */
+ 	if (unlikely(of_match_node(of_skipped_node_table, bus))) {
+-		pr_debug("%s() - skipping %pOF node\n", __func__, bus);
++		printk("%s() - skipping %pOF node\n", __func__, bus);
+ 		return 0;
+ 	}
+ 
+ 	if (of_node_check_flag(bus, OF_POPULATED_BUS)) {
+-		pr_debug("%s() - skipping %pOF, already populated\n",
++		printk("%s() - skipping %pOF, already populated\n",
+ 			__func__, bus);
+ 		return 0;
+ 	}
+@@ -402,6 +408,7 @@ static int of_platform_bus_create(struct device_node *bus,
+ 		}
+ 	}
+ 	of_node_set_flag(bus, OF_POPULATED_BUS);
++	printk("%s: node %s %d\n", __func__, bus->name, rc);
+ 	return rc;
+ }
+ 
+@@ -477,8 +484,8 @@ int of_platform_populate(struct device_node *root,
+ 	if (!root)
+ 		return -EINVAL;
+ 
+-	pr_debug("%s()\n", __func__);
+-	pr_debug(" starting at: %pOF\n", root);
++	printk("%s()\n", __func__);
++	printk(" starting at: %pOF\n", root);
+ 
+ 	device_links_supplier_sync_state_pause();
+ 	for_each_child_of_node(root, child) {

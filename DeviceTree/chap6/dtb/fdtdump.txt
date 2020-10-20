@@ -1,0 +1,449 @@
+/dts-v1/;
+// magic:		0xd00dfeed
+// totalsize:		0x22b0 (8880)
+// off_dt_struct:	0x38
+// off_dt_strings:	0x20c4
+// off_mem_rsvmap:	0x28
+// version:		17
+// last_comp_version:	16
+// boot_cpuid_phys:	0x0
+// size_dt_strings:	0x1ec
+// size_dt_struct:	0x208c
+
+/ {
+    model = "ARM Versatile PB";
+    compatible = "arm,versatile-pb";
+    #address-cells = <0x00000001>;
+    #size-cells = <0x00000001>;
+    interrupt-parent = <0x00000001>;
+    aliases {
+        serial0 = "/amba/uart@101f1000";
+        serial1 = "/amba/uart@101f2000";
+        serial2 = "/amba/uart@101f3000";
+        i2c0 = "/i2c@10002000";
+    };
+    chosen {
+        stdout-path = "/amba/uart@101f1000";
+    };
+    memory {
+        device_type = "memory";
+        reg = <0x00000000 0x08000000>;
+    };
+    xtal24mhz@24M {
+        #clock-cells = <0x00000000>;
+        compatible = "fixed-clock";
+        clock-frequency = <0x016e3600>;
+        phandle = <0x00000005>;
+    };
+    bridge {
+        compatible = "ti,ths8134b", "ti,ths8134";
+        #address-cells = <0x00000001>;
+        #size-cells = <0x00000000>;
+        ports {
+            #address-cells = <0x00000001>;
+            #size-cells = <0x00000000>;
+            port@0 {
+                reg = <0x00000000>;
+                endpoint {
+                    remote-endpoint = <0x00000002>;
+                    phandle = <0x00000009>;
+                };
+            };
+            port@1 {
+                reg = <0x00000001>;
+                endpoint {
+                    remote-endpoint = <0x00000003>;
+                    phandle = <0x00000004>;
+                };
+            };
+        };
+    };
+    vga {
+        compatible = "vga-connector";
+        port {
+            endpoint {
+                remote-endpoint = <0x00000004>;
+                phandle = <0x00000003>;
+            };
+        };
+    };
+    core-module@10000000 {
+        compatible = "arm,core-module-versatile", "syscon", "simple-mfd";
+        reg = <0x10000000 0x00000200>;
+        led@08.0 {
+            compatible = "register-bit-led";
+            offset = <0x00000008>;
+            mask = <0x00000001>;
+            label = "versatile:0";
+            linux,default-trigger = "heartbeat";
+            default-state = "on";
+        };
+        led@08.1 {
+            compatible = "register-bit-led";
+            offset = <0x00000008>;
+            mask = <0x00000002>;
+            label = "versatile:1";
+            linux,default-trigger = "mmc0";
+            default-state = "off";
+        };
+        led@08.2 {
+            compatible = "register-bit-led";
+            offset = <0x00000008>;
+            mask = <0x00000004>;
+            label = "versatile:2";
+            linux,default-trigger = "cpu0";
+            default-state = "off";
+        };
+        led@08.3 {
+            compatible = "register-bit-led";
+            offset = <0x00000008>;
+            mask = <0x00000008>;
+            label = "versatile:3";
+            default-state = "off";
+        };
+        led@08.4 {
+            compatible = "register-bit-led";
+            offset = <0x00000008>;
+            mask = <0x00000010>;
+            label = "versatile:4";
+            default-state = "off";
+        };
+        led@08.5 {
+            compatible = "register-bit-led";
+            offset = <0x00000008>;
+            mask = <0x00000020>;
+            label = "versatile:5";
+            default-state = "off";
+        };
+        led@08.6 {
+            compatible = "register-bit-led";
+            offset = <0x00000008>;
+            mask = <0x00000040>;
+            label = "versatile:6";
+            default-state = "off";
+        };
+        led@08.7 {
+            compatible = "register-bit-led";
+            offset = <0x00000008>;
+            mask = <0x00000080>;
+            label = "versatile:7";
+            default-state = "off";
+        };
+        cm_aux_osc@24M {
+            #clock-cells = <0x00000000>;
+            compatible = "arm,versatile-cm-auxosc";
+            clocks = <0x00000005>;
+            phandle = <0x00000007>;
+        };
+        timclk@1M {
+            #clock-cells = <0x00000000>;
+            compatible = "fixed-factor-clock";
+            clock-div = <0x00000018>;
+            clock-mult = <0x00000001>;
+            clocks = <0x00000005>;
+            phandle = <0x0000000a>;
+        };
+        pclk@24M {
+            #clock-cells = <0x00000000>;
+            compatible = "fixed-factor-clock";
+            clock-div = <0x00000001>;
+            clock-mult = <0x00000001>;
+            clocks = <0x00000005>;
+            phandle = <0x00000006>;
+        };
+    };
+    flash@34000000 {
+        compatible = "arm,versatile-flash", "cfi-flash";
+        reg = <0x34000000 0x04000000>;
+        bank-width = <0x00000004>;
+        partitions {
+            compatible = "arm,arm-firmware-suite";
+        };
+    };
+    i2c@10002000 {
+        #address-cells = <0x00000001>;
+        #size-cells = <0x00000000>;
+        compatible = "arm,versatile-i2c";
+        reg = <0x10002000 0x00001000>;
+        rtc@68 {
+            compatible = "dallas,ds1338";
+            reg = <0x00000068>;
+        };
+    };
+    net@10010000 {
+        compatible = "smsc,lan91c111";
+        reg = <0x10010000 0x00010000>;
+        interrupts = <0x00000019>;
+    };
+    lcd@10008000 {
+        compatible = "arm,versatile-lcd";
+        reg = <0x10008000 0x00001000>;
+    };
+    amba {
+        compatible = "simple-bus";
+        #address-cells = <0x00000001>;
+        #size-cells = <0x00000001>;
+        ranges;
+        intc@10140000 {
+            compatible = "arm,versatile-vic";
+            interrupt-controller;
+            #interrupt-cells = <0x00000001>;
+            reg = <0x10140000 0x00001000>;
+            clear-mask = <0xffffffff>;
+            valid-mask = <0xffffffff>;
+            phandle = <0x00000001>;
+        };
+        intc@10003000 {
+            compatible = "arm,versatile-sic";
+            interrupt-controller;
+            #interrupt-cells = <0x00000001>;
+            reg = <0x10003000 0x00001000>;
+            interrupt-parent = <0x00000001>;
+            interrupts = <0x0000001f>;
+            clear-mask = <0xffffffff>;
+            valid-mask = <0x7fe003ff>;
+            phandle = <0x0000000c>;
+        };
+        dma@10130000 {
+            compatible = "arm,pl081", "arm,primecell";
+            reg = <0x10130000 0x00001000>;
+            interrupts = <0x00000011>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        uart@101f1000 {
+            compatible = "arm,pl011", "arm,primecell";
+            reg = <0x101f1000 0x00001000>;
+            interrupts = <0x0000000c>;
+            clocks = <0x00000005 0x00000006>;
+            clock-names = "uartclk", "apb_pclk";
+        };
+        uart@101f2000 {
+            compatible = "arm,pl011", "arm,primecell";
+            reg = <0x101f2000 0x00001000>;
+            interrupts = <0x0000000d>;
+            clocks = <0x00000005 0x00000006>;
+            clock-names = "uartclk", "apb_pclk";
+        };
+        uart@101f3000 {
+            compatible = "arm,pl011", "arm,primecell";
+            reg = <0x101f3000 0x00001000>;
+            interrupts = <0x0000000e>;
+            clocks = <0x00000005 0x00000006>;
+            clock-names = "uartclk", "apb_pclk";
+        };
+        smc@10100000 {
+            compatible = "arm,primecell";
+            reg = <0x10100000 0x00001000>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        mpmc@10110000 {
+            compatible = "arm,primecell";
+            reg = <0x10110000 0x00001000>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        display@10120000 {
+            compatible = "arm,pl110", "arm,primecell";
+            reg = <0x10120000 0x00001000>;
+            interrupts = <0x00000010>;
+            clocks = <0x00000007 0x00000006>;
+            clock-names = "clcdclk", "apb_pclk";
+            max-memory-bandwidth = <0x0337f980>;
+            port@0 {
+                #address-cells = <0x00000001>;
+                #size-cells = <0x00000000>;
+                endpoint@0 {
+                    reg = <0x00000000>;
+                    remote-endpoint = <0x00000008>;
+                    arm,pl11x,tft-r0g0b0-pads = <0x00000000 0x00000008 0x00000010>;
+                    phandle = <0x0000000b>;
+                };
+                endpoint@1 {
+                    reg = <0x00000001>;
+                    remote-endpoint = <0x00000009>;
+                    arm,pl11x,tft-r0g0b0-pads = <0x00000000 0x00000008 0x00000010>;
+                    phandle = <0x00000002>;
+                };
+            };
+        };
+        sctl@101e0000 {
+            compatible = "arm,primecell";
+            reg = <0x101e0000 0x00001000>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        watchdog@101e1000 {
+            compatible = "arm,primecell";
+            reg = <0x101e1000 0x00001000>;
+            interrupts = <0x00000000>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        timer@101e2000 {
+            compatible = "arm,sp804", "arm,primecell";
+            reg = <0x101e2000 0x00001000>;
+            interrupts = <0x00000004>;
+            clocks = <0x0000000a 0x0000000a 0x00000006>;
+            clock-names = "timer0", "timer1", "apb_pclk";
+        };
+        timer@101e3000 {
+            compatible = "arm,sp804", "arm,primecell";
+            reg = <0x101e3000 0x00001000>;
+            interrupts = <0x00000005>;
+            clocks = <0x0000000a 0x0000000a 0x00000006>;
+            clock-names = "timer0", "timer1", "apb_pclk";
+        };
+        gpio@101e4000 {
+            compatible = "arm,pl061", "arm,primecell";
+            reg = <0x101e4000 0x00001000>;
+            gpio-controller;
+            interrupts = <0x00000006>;
+            #gpio-cells = <0x00000002>;
+            interrupt-controller;
+            #interrupt-cells = <0x00000002>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        gpio@101e5000 {
+            compatible = "arm,pl061", "arm,primecell";
+            reg = <0x101e5000 0x00001000>;
+            interrupts = <0x00000007>;
+            gpio-controller;
+            #gpio-cells = <0x00000002>;
+            interrupt-controller;
+            #interrupt-cells = <0x00000002>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        rtc@101e8000 {
+            compatible = "arm,pl030", "arm,primecell";
+            reg = <0x101e8000 0x00001000>;
+            interrupts = <0x0000000a>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        sci@101f0000 {
+            compatible = "arm,primecell";
+            reg = <0x101f0000 0x00001000>;
+            interrupts = <0x0000000f>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        spi@101f4000 {
+            compatible = "arm,pl022", "arm,primecell";
+            reg = <0x101f4000 0x00001000>;
+            interrupts = <0x0000000b>;
+            clocks = <0x00000005 0x00000006>;
+            clock-names = "SSPCLK", "apb_pclk";
+        };
+        fpga {
+            compatible = "arm,versatile-fpga", "simple-bus";
+            #address-cells = <0x00000001>;
+            #size-cells = <0x00000001>;
+            ranges = <0x00000000 0x10000000 0x00010000>;
+            sysreg@0 {
+                compatible = "arm,versatile-sysreg", "syscon", "simple-mfd";
+                reg = <0x00000000 0x00001000>;
+                display@0 {
+                    compatible = "arm,versatile-tft-panel";
+                    port {
+                        endpoint {
+                            remote-endpoint = <0x0000000b>;
+                            phandle = <0x00000008>;
+                        };
+                    };
+                };
+            };
+            aaci@4000 {
+                compatible = "arm,primecell";
+                reg = <0x00004000 0x00001000>;
+                interrupts = <0x00000018>;
+                clocks = <0x00000006>;
+                clock-names = "apb_pclk";
+            };
+            mmc@5000 {
+                compatible = "arm,pl180", "arm,primecell";
+                reg = <0x00005000 0x00001000>;
+                interrupts-extended = <0x0000000c 0x00000016 0x0000000c 0x00000017>;
+                clocks = <0x00000005 0x00000006>;
+                clock-names = "mclk", "apb_pclk";
+            };
+            kmi@6000 {
+                compatible = "arm,pl050", "arm,primecell";
+                reg = <0x00006000 0x00001000>;
+                interrupt-parent = <0x0000000c>;
+                interrupts = <0x00000003>;
+                clocks = <0x00000005 0x00000006>;
+                clock-names = "KMIREFCLK", "apb_pclk";
+            };
+            kmi@7000 {
+                compatible = "arm,pl050", "arm,primecell";
+                reg = <0x00007000 0x00001000>;
+                interrupt-parent = <0x0000000c>;
+                interrupts = <0x00000004>;
+                clocks = <0x00000005 0x00000006>;
+                clock-names = "KMIREFCLK", "apb_pclk";
+            };
+            uart@9000 {
+                compatible = "arm,pl011", "arm,primecell";
+                reg = <0x00009000 0x00001000>;
+                interrupt-parent = <0x0000000c>;
+                interrupts = <0x00000006>;
+                clocks = <0x00000005 0x00000006>;
+                clock-names = "uartclk", "apb_pclk";
+            };
+            sci@a000 {
+                compatible = "arm,primecell";
+                reg = <0x0000a000 0x00001000>;
+                interrupt-parent = <0x0000000c>;
+                interrupts = <0x00000005>;
+                clocks = <0x00000005>;
+                clock-names = "apb_pclk";
+            };
+            mmc@b000 {
+                compatible = "arm,pl180", "arm,primecell";
+                reg = <0x0000b000 0x00001000>;
+                interrupt-parent = <0x0000000c>;
+                interrupts = <0x00000001 0x00000002>;
+                clocks = <0x00000005 0x00000006>;
+                clock-names = "mclk", "apb_pclk";
+            };
+        };
+        gpio@101e6000 {
+            compatible = "arm,pl061", "arm,primecell";
+            reg = <0x101e6000 0x00001000>;
+            interrupts = <0x00000008>;
+            gpio-controller;
+            #gpio-cells = <0x00000002>;
+            interrupt-controller;
+            #interrupt-cells = <0x00000002>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        gpio@101e7000 {
+            compatible = "arm,pl061", "arm,primecell";
+            reg = <0x101e7000 0x00001000>;
+            interrupts = <0x00000009>;
+            gpio-controller;
+            #gpio-cells = <0x00000002>;
+            interrupt-controller;
+            #interrupt-cells = <0x00000002>;
+            clocks = <0x00000006>;
+            clock-names = "apb_pclk";
+        };
+        pci@10001000 {
+            compatible = "arm,versatile-pci";
+            device_type = "pci";
+            reg = <0x10001000 0x00001000 0x41000000 0x00010000 0x42000000 0x00100000>;
+            bus-range = <0x00000000 0x000000ff>;
+            #address-cells = <0x00000003>;
+            #size-cells = <0x00000002>;
+            #interrupt-cells = <0x00000001>;
+            ranges = <0x01000000 0x00000000 0x00000000 0x43000000 0x00000000 0x00010000 0x02000000 0x00000000 0x50000000 0x50000000 0x00000000 0x10000000 0x42000000 0x00000000 0x60000000 0x60000000 0x00000000 0x10000000>;
+            interrupt-map-mask = <0x00001800 0x00000000 0x00000000 0x00000007>;
+            interrupt-map = <0x00001800 0x00000000 0x00000000 0x00000001 0x0000000c 0x0000001c 0x00001800 0x00000000 0x00000000 0x00000002 0x0000000c 0x0000001d 0x00001800 0x00000000 0x00000000 0x00000003 0x0000000c 0x0000001e 0x00001800 0x00000000 0x00000000 0x00000004 0x0000000c 0x0000001b 0x00001000 0x00000000 0x00000000 0x00000001 0x0000000c 0x0000001b 0x00001000 0x00000000 0x00000000 0x00000002 0x0000000c 0x0000001c 0x00001000 0x00000000 0x00000000 0x00000003 0x0000000c 0x0000001d 0x00001000 0x00000000 0x00000000 0x00000004 0x0000000c 0x0000001e 0x00000800 0x00000000 0x00000000 0x00000001 0x0000000c 0x0000001e 0x00000800 0x00000000 0x00000000 0x00000002 0x0000000c 0x0000001b 0x00000800 0x00000000 0x00000000 0x00000003 0x0000000c 0x0000001c 0x00000800 0x00000000 0x00000000 0x00000004 0x0000000c 0x0000001d 0x00000000 0x00000000 0x00000000 0x00000001 0x0000000c 0x0000001d 0x00000000 0x00000000 0x00000000 0x00000002 0x0000000c 0x0000001e 0x00000000 0x00000000 0x00000000 0x00000003 0x0000000c 0x0000001b 0x00000000 0x00000000 0x00000000 0x00000004 0x0000000c 0x0000001c>;
+        };
+    };
+};

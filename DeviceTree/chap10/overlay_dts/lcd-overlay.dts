@@ -1,0 +1,26 @@
+/*
+ * Device Tree overlay: sample script
+ *
+ * dtc -@ -Hepapr -I dts -O dtb -o lcd.dtbo lcd-overlay.dts
+ * dtc -@ -Hepapr -I dts -O asm -o lcd_dtbo.S lcd-overlay.dts
+ */
+/dts-v1/;
+/plugin/;
+
+/ {
+    compatible = "arm,versatile-pb";
+
+	fragment@0 {
+		target-path = "/lcd@10008000";
+		__overlay__ {
+			#address-cells = <0x1>;
+			#size-cells = <0x1>;
+			subnode@cafebabe {
+				compatible = "overlay-lcd";
+				reg = <0xcafebabe 0x100>;
+			};
+
+		};
+	};
+};
+
